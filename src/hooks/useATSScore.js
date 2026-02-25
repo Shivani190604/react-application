@@ -4,7 +4,7 @@ export const useATSScore = (description) => {
   return useMemo(() => {
     if (!description) return 0;
 
-    const keywords = ["react", "javascript", "html", "css"];
+    const keywords = [ "java", "springboot"];
     let score = 0;
 
     keywords.forEach(word => {

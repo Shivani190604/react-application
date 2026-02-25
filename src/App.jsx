@@ -31,7 +31,7 @@ const AppContent = () => {
         )}
 
         {page === "add" && (
-          <JobForm dispatch={dispatch} />
+           <JobForm jobs={jobs} dispatch={dispatch} />
         )}
 
         {page === "game" && <TicTacToe />}

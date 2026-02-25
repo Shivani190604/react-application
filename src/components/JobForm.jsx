@@ -1,10 +1,12 @@
-import React, { useRef, useReducer } from "react";
+import React, { useRef } from "react";
 import { useForm } from "../hooks/useForm";
-import { jobReducer } from "../reducer/jobReducer";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useATSScore } from "../hooks/useATSScore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const JobForm = () => {
-  const [jobs, dispatch] = useReducer(jobReducer, []);
+const JobForm = ({ jobs, dispatch }) => {
+
   useLocalStorage("jobs", jobs);
 
   const fileRef = useRef();
@@ -15,6 +17,9 @@ const JobForm = () => {
     status: "Applied"
   });
 
+  // Calculate ATS score based on job description (after values is defined)
+  const atsScore = useATSScore(values.description);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,14 +29,18 @@ const JobForm = () => {
         id: Date.now(),
         ...values,
         resume: fileRef.current.files[0]?.name
+  , atsScore
       }
     });
 
     reset();
+
+  toast.success("Job added successfully!");
   };
 
   return (
     <div className="card">
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       <h2>Add New Job</h2>
 
       <form onSubmit={handleSubmit}>
